@@ -1,22 +1,24 @@
-FROM gliderlabs/alpine:3.4
+FROM alpine:3.12
 ARG VERSION=2.9.9
 
 RUN \
-  apk-install \
+  apk add \
     curl \
     openssh-client \
-    python \
-    py-boto \
-    py-dateutil \
-    py-httplib2 \
-    py-jinja2 \
-    py-paramiko \
-    py-pip \
-    py-setuptools \
-    py-yaml \
+    python3 \
+    py3-boto \
+    py3-dateutil \
+    py3-httplib2 \
+    py3-jinja2 \
+    py3-paramiko \
+    py3-pip \
+    py3-setuptools \
+    py3-yaml \
+    py3-netaddr \
     tar && \
-  pip install --upgrade pip python-keyczar && \
-  rm -rf /var/cache/apk/*
+    pip3 install --upgrade pip && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
+    rm -rf /var/cache/apk/*
 
 RUN mkdir /etc/ansible/ /ansible
 RUN echo "[local]" >> /etc/ansible/hosts && \
