@@ -1,8 +1,9 @@
 FROM alpine:3.12
-ARG VERSION=2.9.9
+# ARG VERSION=2.9.9
 
 RUN \
   apk add \
+    rsync \
     curl \
     openssh-client \
     python3 \
@@ -16,7 +17,7 @@ RUN \
     py3-yaml \
     py3-netaddr \
     tar && \
-    pip3 install --upgrade pip && \
+    pip3 install --upgrade pip ansible jsondiff jmespath && \
     ln -s /usr/bin/python3 /usr/bin/python && \
     rm -rf /var/cache/apk/*
 
@@ -24,10 +25,10 @@ RUN mkdir /etc/ansible/ /ansible
 RUN echo "[local]" >> /etc/ansible/hosts && \
     echo "localhost" >> /etc/ansible/hosts
 
-RUN \
-  curl -fsSL https://releases.ansible.com/ansible/ansible-${VERSION}.tar.gz -o ansible.tar.gz && \
-  tar -xzf ansible.tar.gz -C ansible --strip-components 1 && \
-  rm -fr ansible.tar.gz /ansible/docs /ansible/examples /ansible/packaging
+# RUN \
+#   curl -fsSL https://releases.ansible.com/ansible/ansible-${VERSION}.tar.gz -o ansible.tar.gz && \
+#   tar -xzf ansible.tar.gz -C ansible --strip-components 1 && \
+#   rm -fr ansible.tar.gz /ansible/docs /ansible/examples /ansible/packaging
 
 RUN mkdir -p /ansible/playbooks
 WORKDIR /ansible/playbooks
